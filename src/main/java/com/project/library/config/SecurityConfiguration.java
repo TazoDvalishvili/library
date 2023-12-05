@@ -40,9 +40,11 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/swagger-ui/*", "/v3/api-docs/**").permitAll()
+                .antMatchers("/auth/**", "/swagger-ui/*", "/v3/api-docs/**").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/**")
+                .authorizeHttpRequests().antMatchers("/admin/**").hasAuthority("ADMIN")
+                .and()
+                .authorizeHttpRequests().antMatchers("/**")
                 .authenticated()
                 .and()
                 .sessionManagement()
