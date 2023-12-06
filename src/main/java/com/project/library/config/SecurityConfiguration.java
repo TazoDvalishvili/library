@@ -40,7 +40,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/auth/**", "/swagger-ui/*", "/v3/api-docs/**").permitAll()
+                .antMatchers("/auth/**", "/swagger-ui/*", "/v3/api-docs/**", "/h2-console/**").permitAll()
                 .and()
                 .authorizeHttpRequests().antMatchers("/admin/**").hasAuthority("ADMIN")
                 .and()
@@ -52,6 +52,7 @@ public class SecurityConfiguration {
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .csrf().disable()
+                .headers().frameOptions().disable().and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
 
     }
